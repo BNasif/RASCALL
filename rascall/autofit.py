@@ -277,10 +277,14 @@ def iterate_mols(funcname='[H]C(=O)[!#1]',lowlim=2687.5,highlim=2906.25, sidepea
     best_fits_info = []
     attempted_fits_info = []
     mols = []
+
+    ### Identify molecules with the specified functional group that are also in NIST data
     for molecule_code, molecule_functionals in molecule_dictionary.items():
         if any(funcname in s for s in molecule_dictionary.get(molecule_code)):
             if molecule_code in NIST_Smiles:
                     usable_molecules.append(molecule_code)
+
+    ### Fit each identified molecule using NIST spectral data
     i =0
     for molecule_name in usable_molecules:
         i+=1

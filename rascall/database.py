@@ -22,7 +22,7 @@ def get_functionals(filename='functionals_formatted_eye_edit.csv'):
     # Example data
     # COC C-O-C sbend 2500 2720 weak
     # COC C-O-C abend 2800 2920 strong
-    with open(get_file('functionals.csv'), 'rU') as fhl:
+    with open(get_file('functionals.csv'), 'r') as fhl:
         return Functional_Parser().functional_dictionary_for(fhl.readlines())
 
 #print 'Total number of unique functionals', len(functional_dictionary)
@@ -54,16 +54,19 @@ def get_hydrocarbons(plotables, molecule_dictionary):
     hydrocarbons_list = []
     hydrocarbons_in_NIST = []
 
-    for molecule_code, molecule_functionals in molecule_dictionary.items():
-        if any('O' in s for s in molecule_code) or any('P' in s for s in molecule_code) or any('N' in s for s in molecule_code) or any('S' in s for s in molecule_code) or any('F' in s for s in molecule_code) or any('I' in s for s in molecule_code) or any('B' in s for s in molecule_code) or any('l' in s for s in molecule_code):
-            not_hydrocarbons = not_hydrocarbons + 1
+    non_hydrocarbon_elements = set('OPNSFIBl')
+    plotables_set = set(plotables)
+
+    for molecule_code in molecule_dictionary:
+        if any(elem in molecule_code for elem in non_hydrocarbon_elements):
+            not_hydrocarbons += 1
         else:
-            #print (hydrocarbons + 1), molecule_code, ' with ', len(molecule_dictionary.get(molecule_code)), ' functionals'
             hydrocarbons_list.append(molecule_code)
-            hydrocarbons = hydrocarbons + 1
-            if molecule_code in plotables:
+            hydrocarbons += 1
+            if molecule_code in plotables_set:
                 hydrocarbons_in_NIST.append(molecule_code)
-    print ('Hydrocarbons:', len(hydrocarbons_list),'Hydrocarbons in NIST:', len(hydrocarbons_in_NIST))
+
+    print('Hydrocarbons:', len(hydrocarbons_list), 'Hydrocarbons in NIST:', len(hydrocarbons_in_NIST))
     return hydrocarbons_in_NIST, not_hydrocarbons
 
 def get_halocarbons(plotables, molecule_dictionary):

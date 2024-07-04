@@ -85,9 +85,9 @@ def plot_hist(func, file, func_dict, fileformat = 'new', initial = True, multipl
     os.chdir(initial_dir)
     return
 
-def plot_all_hists(func_dict, init=False, multipl=True,elimin=True):   
+def plot_all_hists(func_dict, init=False, multipl=True,elimin=True):
     matplotlib.use('TkAgg')
-    os.chdir(r'../func_group_stats/')
+    os.chdir('func_group_stats')
     all_funcs = os.listdir()
    # func_dict = get_functionals()
     # for i in func_dict.keys():
